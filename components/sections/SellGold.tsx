@@ -61,7 +61,7 @@ export default function SellGoldPage() {
   const fetchLiveGoldPrices = async () => {
     setPricesLoading(true);
     try {
-      const GOLD_API_KEY = "goldapi-115ffvsmglzrkz0-io";
+      const GOLD_API_KEY = "goldapi-115ffvsmgmg2mdc-io";
       const GOLD_API_URL = "https://www.goldapi.io/api";
 
       // Fetch XAU/INR (Gold in Indian Rupees)
