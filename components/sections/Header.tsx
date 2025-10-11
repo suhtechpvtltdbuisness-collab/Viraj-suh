@@ -2,12 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import { scrollToSection } from "@/lib/utils";
-import { DollarSign, MapPin, Menu, Phone, X } from "lucide-react";
+import { DollarSign, MapPin, Menu, Phone, RefreshCw, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [liveGoldPrice, setLiveGoldPrice] = useState("₹10,609");
+  const [pricesLoading, setPricesLoading] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +17,49 @@ export default function Header() {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Fetch live gold prices from GoldAPI.io
+  const fetchLiveGoldPrice = async () => {
+    setPricesLoading(true);
+    try {
+      const GOLD_API_KEY = "goldapi-115ffvsmglzrkz0-io";
+      const GOLD_API_URL = "https://www.goldapi.io/api";
+
+      const response = await fetch(`${GOLD_API_URL}/XAU/INR`, {
+        headers: {
+          'x-access-token': GOLD_API_KEY,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch gold prices');
+      }
+
+      const data = await response.json();
+
+      if (data && data.price_gram_24k) {
+        const price24k = Math.round(data.price_gram_24k);
+        setLiveGoldPrice(`₹${price24k.toLocaleString('en-IN')}`);
+      }
+    } catch (error) {
+      console.error('Failed to fetch gold prices:', error);
+    } finally {
+      setPricesLoading(false);
+    }
+  };
+
+  // Fetch prices on mount and set up auto-refresh
+  useEffect(() => {
+    fetchLiveGoldPrice();
+
+    // Auto-refresh every 5 minutes
+    const interval = setInterval(() => {
+      fetchLiveGoldPrice();
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleSectionClick = (sectionId: string) => {
@@ -40,7 +85,6 @@ export default function Header() {
       }`}
     >
       {/* Top Info Bar */}
-      {/* Top Info Bar */}
       <div className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-600 text-white text-xs sm:text-sm py-2">
         <div className="container mx-auto px-3 sm:px-4 flex flex-wrap justify-between items-center gap-2 sm:gap-0">
           <div className="flex items-center gap-3 text-[11px] sm:text-sm">
@@ -65,10 +109,18 @@ export default function Header() {
             </a>
           </div>
 
-          <div className="hidden md:block text-xs sm:text-sm">
-            <span className="animate-pulse">
-              🔥 Best Gold Prices Today: ₹10,609/gram
+          <div className="hidden md:flex items-center gap-2 text-xs sm:text-sm">
+            <span className={`${pricesLoading ? 'animate-pulse' : ''}`}>
+              🔥 Best Gold Prices Today: {liveGoldPrice}/gram
             </span>
+            <button
+              onClick={fetchLiveGoldPrice}
+              disabled={pricesLoading}
+              className="ml-1 hover:scale-110 transition-transform duration-300 disabled:opacity-50"
+              title="Refresh live price"
+            >
+              <RefreshCw className={`h-3 w-3 ${pricesLoading ? 'animate-spin' : ''}`} />
+            </button>
           </div>
         </div>
       </div>
@@ -156,6 +208,27 @@ export default function Header() {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden mt-3 bg-white rounded-lg shadow-xl border border-yellow-200 p-3 sm:p-4 space-y-2">
+            {/* Live Price in Mobile Menu */}
+            <div className="mb-3 p-3 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg border border-yellow-200">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium text-gray-700">
+                    🔥 Live Gold Price:
+                  </span>
+                  <span className={`text-sm font-bold text-amber-700 ${pricesLoading ? 'animate-pulse' : ''}`}>
+                    {liveGoldPrice}/g
+                  </span>
+                </div>
+                <button
+                  onClick={fetchLiveGoldPrice}
+                  disabled={pricesLoading}
+                  className="hover:scale-110 transition-transform duration-300 disabled:opacity-50"
+                >
+                  <RefreshCw className={`h-3 w-3 text-amber-600 ${pricesLoading ? 'animate-spin' : ''}`} />
+                </button>
+              </div>
+            </div>
+
             {navItems.map((item) => (
               <button
                 key={item.name}

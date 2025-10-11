@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { ArrowRight, Award, Calculator, Camera, CheckCircle, Clock, DollarSign, Shield, TrendingUp } from 'lucide-react';
+import { CheckCircle, DollarSign, RefreshCw, Shield, TrendingUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -22,6 +22,14 @@ interface SellGoldResult {
   status: string;
 }
 
+interface GoldRates {
+  '24k': { rate: number; purity: number };
+  '22k': { rate: number; purity: number };
+  '18k': { rate: number; purity: number };
+  '14k': { rate: number; purity: number };
+  '10k': { rate: number; purity: number };
+}
+
 export default function SellGoldPage() {
   const [formData, setFormData] = useState({
     customerName: '',
@@ -31,7 +39,7 @@ export default function SellGoldPage() {
     goldType: '',
     weight: '',
     purity: '',
-    currentPrice: '6500',
+    currentPrice: '',
     sellingPrice: '',
     idProof: '',
     idNumber: ''
@@ -39,30 +47,96 @@ export default function SellGoldPage() {
   const [result, setResult] = useState<SellGoldResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [estimatedValue, setEstimatedValue] = useState(0);
-
-  // Current market rates
-  const goldRates = {
+  const [goldRates, setGoldRates] = useState<GoldRates>({
     '24k': { rate: 6500, purity: 99.9 },
     '22k': { rate: 6200, purity: 91.7 },
     '18k': { rate: 4650, purity: 75.0 },
     '14k': { rate: 3600, purity: 58.3 },
     '10k': { rate: 2580, purity: 41.7 }
+  });
+  const [pricesLoading, setPricesLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  // Fetch live gold prices directly from GoldAPI.io
+  const fetchLiveGoldPrices = async () => {
+    setPricesLoading(true);
+    try {
+      const GOLD_API_KEY = "goldapi-115ffvsmglzrkz0-io";
+      const GOLD_API_URL = "https://www.goldapi.io/api";
+
+      // Fetch XAU/INR (Gold in Indian Rupees)
+      const response = await fetch(`${GOLD_API_URL}/XAU/INR`, {
+        headers: {
+          'x-access-token': GOLD_API_KEY,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch gold prices');
+      }
+
+      const data = await response.json();
+
+      console.log('Gold API Response:', data);
+
+      if (data && data.price_gram_24k) {
+        // GoldAPI provides direct per-gram prices for different purities
+        const newRates: GoldRates = {
+          '24k': { rate: Math.round(data.price_gram_24k), purity: 99.9 },
+          '22k': { rate: Math.round(data.price_gram_22k), purity: 91.7 },
+          '18k': { rate: Math.round(data.price_gram_18k), purity: 75.0 },
+          '14k': { rate: Math.round(data.price_gram_14k), purity: 58.3 },
+          '10k': { rate: Math.round(data.price_gram_10k), purity: 41.7 }
+        };
+
+        setGoldRates(newRates);
+        setLastUpdated(new Date());
+
+        // Update current price in form if gold type is selected
+        if (formData.goldType) {
+          setFormData(prev => ({
+            ...prev,
+            currentPrice: newRates[formData.goldType as keyof typeof newRates].rate.toString()
+          }));
+        }
+
+        toast.success('Live gold prices updated from GoldAPI.io!');
+      }
+    } catch (error) {
+      console.error('Failed to fetch gold prices:', error);
+      toast.error('Failed to update prices. Using default rates.');
+    } finally {
+      setPricesLoading(false);
+    }
   };
+
+  // Fetch prices on mount and set up auto-refresh
+  useEffect(() => {
+    fetchLiveGoldPrices();
+
+    // Auto-refresh every 5 minutes
+    const interval = setInterval(() => {
+      fetchLiveGoldPrices();
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const calculateValue = () => {
     if (formData.weight && formData.goldType && formData.currentPrice) {
       const weight = parseFloat(formData.weight);
       const price = parseFloat(formData.currentPrice);
       const goldInfo = goldRates[formData.goldType as keyof typeof goldRates];
-      
+
       if (goldInfo) {
         const grossValue = weight * price;
         const deductions = grossValue * 0.20; // 20% total deductions
         const netValue = grossValue - deductions;
-        
+
         setEstimatedValue(Math.round(netValue));
-        setFormData(prev => ({ 
-          ...prev, 
+        setFormData(prev => ({
+          ...prev,
           purity: goldInfo.purity.toString(),
           sellingPrice: Math.round(netValue).toString()
         }));
@@ -75,7 +149,19 @@ export default function SellGoldPage() {
   }, [formData.weight, formData.goldType, formData.currentPrice]);
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData(prev => {
+      const updated = { ...prev, [field]: value };
+
+      // Auto-update current price when gold type changes
+      if (field === 'goldType' && value) {
+        const rate = goldRates[value as keyof typeof goldRates]?.rate;
+        if (rate) {
+          updated.currentPrice = rate.toString();
+        }
+      }
+
+      return updated;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -121,7 +207,7 @@ export default function SellGoldPage() {
       goldType: '',
       weight: '',
       purity: '',
-      currentPrice: '6500',
+      currentPrice: '',
       sellingPrice: '',
       idProof: '',
       idNumber: ''
@@ -131,17 +217,16 @@ export default function SellGoldPage() {
   };
 
   const currentRates = [
-    { karat: '24K', rate: goldRates['24k'].rate, change: '+2.3%', color: 'text-green-600' },
-    { karat: '22K', rate: goldRates['22k'].rate, change: '+2.1%', color: 'text-green-600' },
-    { karat: '18K', rate: goldRates['18k'].rate, change: '+1.8%', color: 'text-green-600' },
-    { karat: '14K', rate: goldRates['14k'].rate, change: '+1.5%', color: 'text-green-600' },
-    { karat: '10K', rate: goldRates['10k'].rate, change: '+1.2%', color: 'text-green-600' },
+    { karat: '24K', rate: goldRates['24k'].rate, purity: goldRates['24k'].purity },
+    { karat: '22K', rate: goldRates['22k'].rate, purity: goldRates['22k'].purity },
+    { karat: '18K', rate: goldRates['18k'].rate, purity: goldRates['18k'].purity },
+    { karat: '14K', rate: goldRates['14k'].rate, purity: goldRates['14k'].purity },
+    { karat: '10K', rate: goldRates['10k'].rate, purity: goldRates['10k'].purity },
   ];
 
   return (
-    <div id='sell-gold' className="py-16 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50">
+    <div className="py-16 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 min-h-screen">
       <div className="container mx-auto px-4">
-        {/* Header */}
         <div className="text-center mb-12">
           <DollarSign className="h-16 w-16 mx-auto mb-6 text-yellow-500" />
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -153,49 +238,63 @@ export default function SellGoldPage() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Current Gold Rates */}
           <div className="lg:col-span-1">
             <Card className="bg-white shadow-xl border border-yellow-200 sticky top-8">
               <CardHeader className="bg-gradient-to-r from-yellow-400 to-amber-500 text-white">
-                <CardTitle className="text-xl font-bold flex items-center">
-                  <TrendingUp className="h-5 w-5 mr-2" />
-                  Live Gold Rates
-                </CardTitle>
-                <p className="text-yellow-100 text-sm">Updated every 5 minutes</p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-xl font-bold flex items-center">
+                      <TrendingUp className="h-5 w-5 mr-2" />
+                      Live Gold Rates
+                    </CardTitle>
+                    <p className="text-yellow-100 text-sm mt-1">
+                      {lastUpdated ? `Updated ${lastUpdated.toLocaleTimeString()}` : 'Loading...'}
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-white hover:bg-yellow-500"
+                    onClick={fetchLiveGoldPrices}
+                    disabled={pricesLoading}
+                  >
+                    <RefreshCw className={`h-4 w-4 ${pricesLoading ? 'animate-spin' : ''}`} />
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
                 <div className="text-center mb-4">
-                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-                  <span className="text-sm text-gray-600">Live • Just updated</span>
+                  <span className={`inline-block w-2 h-2 rounded-full mr-2 ${pricesLoading ? 'bg-yellow-500' : 'bg-green-500'} animate-pulse`}></span>
+                  <span className="text-sm text-gray-600">
+                    {pricesLoading ? 'Updating...' : 'Live • Real-time rates'}
+                  </span>
                 </div>
 
                 {currentRates.map((rate, index) => (
                   <div key={index} className="flex justify-between items-center p-3 rounded-lg bg-gradient-to-r from-amber-50 to-yellow-50 border border-yellow-200">
                     <div>
                       <p className="font-semibold text-gray-800">{rate.karat} Gold</p>
-                      <p className="text-xs text-gray-600">Per gram</p>
+                      <p className="text-xs text-gray-600">Per gram ({rate.purity}% pure)</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-amber-700">₹{rate.rate}</p>
-                      <p className={`text-xs font-medium ${rate.color}`}>
-                        {rate.change} ↗️
+                      <p className="font-bold text-amber-700">₹{rate.rate.toLocaleString()}</p>
+                      <p className="text-xs font-medium text-green-600">
+                        Live Rate
                       </p>
                     </div>
                   </div>
                 ))}
 
-                <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
-                  <p className="text-sm text-green-700 text-center font-medium">
-                    🔥 Prices are at 6-month high!
+                <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                  <p className="text-sm text-blue-700 text-center font-medium">
+                    💡 Powered by SuhTech
                   </p>
                 </div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Form and Results */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Sell Gold Form */}
             <Card className="shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -204,11 +303,10 @@ export default function SellGoldPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Customer Details */}
+                <div className="space-y-6">
                   <div className="space-y-4">
                     <h4 className="font-medium text-gray-900">Customer Information</h4>
-                    
+
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="customerName">Full Name *</Label>
@@ -257,7 +355,6 @@ export default function SellGoldPage() {
                     </div>
                   </div>
 
-                  {/* Gold Details */}
                   <div className="space-y-4">
                     <h4 className="font-medium text-gray-900">Gold Information</h4>
 
@@ -269,11 +366,11 @@ export default function SellGoldPage() {
                             <SelectValue placeholder="Select gold type" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="24k">24K Gold (99.9%)</SelectItem>
-                            <SelectItem value="22k">22K Gold (91.7%)</SelectItem>
-                            <SelectItem value="18k">18K Gold (75.0%)</SelectItem>
-                            <SelectItem value="14k">14K Gold (58.3%)</SelectItem>
-                            <SelectItem value="10k">10K Gold (41.7%)</SelectItem>
+                            <SelectItem value="24k">24K Gold (99.9%) - ₹{goldRates['24k'].rate}/g</SelectItem>
+                            <SelectItem value="22k">22K Gold (91.7%) - ₹{goldRates['22k'].rate}/g</SelectItem>
+                            <SelectItem value="18k">18K Gold (75.0%) - ₹{goldRates['18k'].rate}/g</SelectItem>
+                            <SelectItem value="14k">14K Gold (58.3%) - ₹{goldRates['14k'].rate}/g</SelectItem>
+                            <SelectItem value="10k">10K Gold (41.7%) - ₹{goldRates['10k'].rate}/g</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -297,39 +394,40 @@ export default function SellGoldPage() {
                       <Input
                         id="currentPrice"
                         type="number"
-                        placeholder="Enter current gold price"
+                        placeholder="Auto-filled from live rates"
                         value={formData.currentPrice}
                         onChange={(e) => handleInputChange('currentPrice', e.target.value)}
                         required
+                        className="bg-yellow-50"
                       />
+                      <p className="text-xs text-gray-500">Auto-updated when you select gold type</p>
                     </div>
 
                     {estimatedValue > 0 && (
                       <div className="p-4 bg-green-50 rounded-lg border border-green-200">
                         <h4 className="font-semibold text-green-800 mb-2">Estimated Value:</h4>
                         <p className="text-2xl font-bold text-green-700">₹{estimatedValue.toLocaleString()}</p>
-                        <p className="text-sm text-green-600 mt-1">After deductions (making charges & wastage)</p>
+                        <p className="text-sm text-green-600 mt-1">After deductions (making charges & wastage ~20%)</p>
                       </div>
                     )}
                   </div>
 
                   <div className="flex gap-4">
-                    <Button 
-                      type="submit" 
-                      className="flex-1 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white" 
-                      disabled={loading}
+                    <Button
+                      onClick={handleSubmit}
+                      className="flex-1 bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-600 hover:to-amber-700 text-white"
+                      disabled={loading || !formData.customerName || !formData.customerPhone || !formData.goldType || !formData.weight}
                     >
                       {loading ? 'Submitting...' : 'Submit for Selling'}
                     </Button>
-                    <Button type="button" variant="outline" onClick={resetForm}>
+                    <Button variant="outline" onClick={resetForm}>
                       Reset
                     </Button>
                   </div>
-                </form>
+                </div>
               </CardContent>
             </Card>
 
-            {/* Results */}
             {result && (
               <Card className="shadow-lg border-green-200">
                 <CardHeader className="bg-green-50">
@@ -372,13 +470,12 @@ export default function SellGoldPage() {
               </Card>
             )}
 
-            {/* Why Choose Us */}
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="bg-white shadow-lg border border-yellow-200 text-center">
                 <CardContent className="p-6">
                   <TrendingUp className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
-                  <h3 className="font-bold text-lg mb-2">Best Prices</h3>
-                  <p className="text-gray-600 text-sm">Market-leading rates updated every 5 minutes</p>
+                  <h3 className="font-bold text-lg mb-2">Live Market Rates</h3>
+                  <p className="text-gray-600 text-sm">Real-time pricing from GoldAPI.io updated automatically</p>
                 </CardContent>
               </Card>
 

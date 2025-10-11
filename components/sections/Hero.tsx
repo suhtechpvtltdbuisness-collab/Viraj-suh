@@ -3,19 +3,35 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { scrollToSection } from "@/lib/utils";
-import { ArrowRight, Award, Clock, Shield, TrendingUp } from "lucide-react";
+import { ArrowRight, Award, Clock, RefreshCw, Shield, TrendingUp } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { toast } from "sonner";
 
 interface HeroProps {
   scrollY: number;
 }
 
+interface MarketRate {
+  metal: string;
+  rate: string;
+  change: string;
+  trend: string;
+}
+
 export default function Hero({ scrollY }: HeroProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const router = useRouter();
+  const [marketRates, setMarketRates] = useState<MarketRate[]>([
+    { metal: "Gold (24K)", rate: "₹10,609", change: "+0.68%", trend: "up" },
+    { metal: "Gold (22K)", rate: "₹9,725", change: "+0.68%", trend: "up" },
+    { metal: "Silver", rate: "₹126", change: "+5.1%", trend: "up" },
+    { metal: "Gold (18K)", rate: "₹7,957", change: "+0.65%", trend: "up" },
+  ]);
+  const [pricesLoading, setPricesLoading] = useState(true);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   // Jewelry images for sliding background
   const jewelryImages = [
@@ -32,13 +48,81 @@ export default function Hero({ scrollY }: HeroProps) {
     return () => clearInterval(timer);
   }, [jewelryImages.length]);
 
-  // Real-time market rates
-  const marketRates = [
-    { metal: "Gold (24K)", rate: "₹10,609", change: "+0.68%", trend: "up" },
-    { metal: "Gold (22K)", rate: "₹9,725", change: "+0.68%", trend: "up" },
-    { metal: "Silver", rate: "₹126", change: "+5.1%", trend: "up" },
-    { metal: "Gold (18K)", rate: "₹7,957", change: "+0.65%", trend: "up" },
-  ];
+  // Fetch live gold prices from GoldAPI.io
+  const fetchLiveGoldPrices = async () => {
+    setPricesLoading(true);
+    try {
+      const GOLD_API_KEY = "goldapi-115ffvsmglzrkz0-io";
+      const GOLD_API_URL = "https://www.goldapi.io/api";
+
+      const response = await fetch(`${GOLD_API_URL}/XAU/INR`, {
+        headers: {
+          'x-access-token': GOLD_API_KEY,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch gold prices');
+      }
+
+      const data = await response.json();
+
+      if (data && data.price_gram_24k) {
+        // Calculate percentage change
+        const changePercent = data.chp ? `${data.chp > 0 ? '+' : ''}${data.chp.toFixed(2)}%` : "+0.00%";
+        const trend = data.chp >= 0 ? "up" : "down";
+
+        const newRates: MarketRate[] = [
+          {
+            metal: "Gold (24K)",
+            rate: `₹${Math.round(data.price_gram_24k).toLocaleString()}`,
+            change: changePercent,
+            trend
+          },
+          {
+            metal: "Gold (22K)",
+            rate: `₹${Math.round(data.price_gram_22k).toLocaleString()}`,
+            change: changePercent,
+            trend
+          },
+          {
+            metal: "Gold (18K)",
+            rate: `₹${Math.round(data.price_gram_18k).toLocaleString()}`,
+            change: changePercent,
+            trend
+          },
+          {
+            metal: "Gold (14K)",
+            rate: `₹${Math.round(data.price_gram_14k).toLocaleString()}`,
+            change: changePercent,
+            trend
+          },
+        ];
+
+        setMarketRates(newRates);
+        setLastUpdated(new Date());
+        toast.success('Live gold prices updated!');
+      }
+    } catch (error) {
+      console.error('Failed to fetch gold prices:', error);
+      toast.error('Using cached rates');
+    } finally {
+      setPricesLoading(false);
+    }
+  };
+
+  // Fetch prices on mount and set up auto-refresh
+  useEffect(() => {
+    fetchLiveGoldPrices();
+
+    // Auto-refresh every 5 minutes
+    const interval = setInterval(() => {
+      fetchLiveGoldPrices();
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <section
@@ -106,11 +190,8 @@ export default function Hero({ scrollY }: HeroProps) {
               </ul>
             </div>
 
-            {/* Trust Indicators - Updated with Click Handlers */}
-
             {/* Trust Indicators */}
             <div className="flex flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
-              {/* Clickable SBI Approver Badge */}
               <Link href="">
                 <div className="flex items-center space-x-2 bg-white/30 backdrop-blur-md rounded-full px-3 py-1.5 sm:px-4 sm:py-2 border border-yellow-300/50 shadow-lg hover:bg-white/40 hover:scale-105 transition-all duration-300 cursor-pointer group">
                   <Shield className="h-5 w-5 text-yellow-300 group-hover:text-blue-400 transition-colors" />
@@ -120,7 +201,6 @@ export default function Hero({ scrollY }: HeroProps) {
                 </div>
               </Link>
 
-              {/* Non-clickable Processing Badge */}
               <div className="flex items-center space-x-2 bg-white/30 backdrop-blur-md rounded-full px-3 py-1.5 sm:px-4 sm:py-2 border border-yellow-300/50 shadow-lg">
                 <Clock className="h-5 w-5 text-yellow-300" />
                 <span className="text-xs sm:text-sm font-medium drop-shadow-sm">
@@ -128,7 +208,6 @@ export default function Hero({ scrollY }: HeroProps) {
                 </span>
               </div>
 
-              {/* Non-clickable Legacy Badge */}
               <div className="flex items-center space-x-2 bg-white/30 backdrop-blur-md rounded-full px-3 py-1.5 sm:px-4 sm:py-2 border border-yellow-300/50 shadow-lg">
                 <Award className="h-5 w-5 text-yellow-300" />
                 <span className="text-xs sm:text-sm font-medium drop-shadow-sm">
@@ -206,18 +285,31 @@ export default function Hero({ scrollY }: HeroProps) {
           <div className="w-full">
             <Card className="bg-white/95 backdrop-blur-sm border border-yellow-200 shadow-2xl">
               <CardHeader className="bg-gradient-to-r from-yellow-400 to-amber-500 text-white rounded-t-lg">
-                <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold flex items-center">
-                  <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 mr-2 sm:mr-3" />
-                  Live Market Rates
-                </CardTitle>
-                <p className="text-xs sm:text-sm text-amber-100">
-                  Updated September 2, 2025
-                </p>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-lg sm:text-xl md:text-2xl font-bold flex items-center">
+                      <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 mr-2 sm:mr-3" />
+                      Live Market Rates
+                    </CardTitle>
+                    <p className="text-xs sm:text-sm text-amber-100">
+                      {lastUpdated ? `Updated ${lastUpdated.toLocaleTimeString()}` : 'Loading...'}
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-white hover:bg-yellow-500"
+                    onClick={fetchLiveGoldPrices}
+                    disabled={pricesLoading}
+                  >
+                    <RefreshCw className={`h-4 w-4 ${pricesLoading ? 'animate-spin' : ''}`} />
+                  </Button>
+                </div>
               </CardHeader>
               <CardContent className="p-4 sm:p-6 space-y-4">
                 <div className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 text-center">
-                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-                  Live Rates • Per gram prices
+                  <span className={`inline-block w-2 h-2 rounded-full mr-2 ${pricesLoading ? 'bg-yellow-500' : 'bg-green-500'} animate-pulse`}></span>
+                  {pricesLoading ? 'Updating prices...' : 'Live Rates • Per gram prices'}
                 </div>
 
                 {marketRates.map((rate, index) => (
@@ -277,7 +369,7 @@ export default function Hero({ scrollY }: HeroProps) {
                 <div className="text-center">
                   <div className="inline-flex items-center px-2.5 sm:px-3 py-1 rounded-full bg-green-100 text-green-700 text-[10px] sm:text-xs font-medium">
                     <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-                    Market prices updated live
+                    Powered by Suhtech
                   </div>
                 </div>
               </CardContent>
