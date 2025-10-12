@@ -23,7 +23,7 @@ export default function Header() {
   const fetchLiveGoldPrice = async () => {
     setPricesLoading(true);
     try {
-      const GOLD_API_KEY = "goldapi-115ffvsmgmg2mdc-io";
+      const GOLD_API_KEY = "goldapi-19qv28smgn8uruu-io";
       const GOLD_API_URL = "https://www.goldapi.io/api";
 
       const response = await fetch(`${GOLD_API_URL}/XAU/INR`, {
