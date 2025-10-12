@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   title:
     "Cash for Gold Lajpat Nagar | Best Rates in Delhi NCR | Viraj Jewellers",
   description:
-    "Sell gold for instant cash in Lajpat Nagar, Delhi. Trusted gold buyers offering best market rates, on-spot testing, and same-day payment. Cash for Gold in South Delhi.",
+    "Sell gold for instant cash in Lajpat Nagar , Delhi. Trusted gold buyers offering best market rates, on-spot testing, and same-day payment. Cash for Gold in South Delhi.",
   icons: [
     {
       url: "/favicon.ico",
