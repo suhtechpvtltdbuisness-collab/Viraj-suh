@@ -38,7 +38,7 @@ export default function Contact() {
     {
       icon: <MapPin className="h-6 w-6 text-amber-600" />,
       title: "Office Address",
-      details: ["SHOP: O-14, LAJPAT NAGAR - II, NEAR GOLDEN DRAGON RESTAURANT,", "NEW DELHI - 110024"],
+      details: ["C-159,Roxy chowk, Veer Savarkar Marg, near Chicago-Pizza, near Chicago- Pizza, Lajpat Nagar II, New Delhi, Delhi 110024"],
       action: "Get Directions"
     }
   ];
@@ -123,9 +123,9 @@ export default function Contact() {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name *</Label>
-                    <Input 
+                    <Input
                       id="name"
-                      placeholder="Enter your full name" 
+                      placeholder="Enter your full name"
                       className="border-amber-200 focus:border-amber-500 focus:ring-amber-500"
                       value={formData.name}
                       onChange={(e) => handleInputChange('name', e.target.value)}
@@ -134,9 +134,9 @@ export default function Contact() {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="phone">Phone Number *</Label>
-                    <Input 
+                    <Input
                       id="phone"
-                      placeholder="Enter your phone number" 
+                      placeholder="Enter your phone number"
                       className="border-amber-200 focus:border-amber-500 focus:ring-amber-500"
                       value={formData.phone}
                       onChange={(e) => handleInputChange('phone', e.target.value)}
@@ -147,10 +147,10 @@ export default function Contact() {
 
                 <div className="space-y-2">
                   <Label htmlFor="email">Email Address *</Label>
-                  <Input 
+                  <Input
                     id="email"
-                    type="email" 
-                    placeholder="Enter your email address" 
+                    type="email"
+                    placeholder="Enter your email address"
                     className="border-amber-200 focus:border-amber-500 focus:ring-amber-500"
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
@@ -160,9 +160,9 @@ export default function Contact() {
 
                 <div className="space-y-2">
                   <Label htmlFor="subject">Subject *</Label>
-                  <Input 
+                  <Input
                     id="subject"
-                    placeholder="Enter subject" 
+                    placeholder="Enter subject"
                     className="border-amber-200 focus:border-amber-500 focus:ring-amber-500"
                     value={formData.subject}
                     onChange={(e) => handleInputChange('subject', e.target.value)}
@@ -199,16 +199,16 @@ export default function Contact() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button 
+                  <Button
                     type="submit"
                     className="flex-1 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-bold py-3 rounded-full transform transition-all duration-300 hover:scale-105"
                     disabled={loading}
                   >
                     {loading ? 'Sending...' : 'Send Message'}
                   </Button>
-                  <Button 
+                  <Button
                     type="button"
-                    variant="outline" 
+                    variant="outline"
                     className="flex-1 border-2 border-amber-500 text-amber-700 hover:bg-amber-500 hover:text-white font-bold py-3 rounded-full transition-all duration-300"
                     onClick={() => window.open('tel:+919350564449')}
                   >
@@ -235,8 +235,8 @@ export default function Contact() {
                         {info.details.map((detail, idx) => (
                           <p key={idx} className="text-gray-600 mb-1">{detail}</p>
                         ))}
-                        <Button 
-                          variant="link" 
+                        <Button
+                          variant="link"
                           className="text-amber-600 hover:text-amber-700 p-0 h-auto font-semibold"
                           onClick={() => {
                             if (info.title === 'Phone') {
@@ -286,7 +286,7 @@ export default function Contact() {
               <CardContent className="p-6 text-center">
                 <h4 className="font-bold text-xl mb-2">Emergency cash for gold Service</h4>
                 <p className="text-red-100 mb-4">Need urgent cash? We're available 24/7 for emergency cash for gold sevice</p>
-                <Button 
+                <Button
                   className="bg-white text-red-600 hover:bg-red-50 font-bold rounded-full"
                   onClick={() => window.open('tel:+919350564449')}
                 >

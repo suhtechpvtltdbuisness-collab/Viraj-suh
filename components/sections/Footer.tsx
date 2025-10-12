@@ -116,8 +116,8 @@ export default function Footer() {
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 text-amber-500 mt-1" />
                 <div className="text-gray-300">
-                  <p>SHOP: O-14, LAJPAT NAGAR - II, NEAR GOLDEN DRAGON RESTAURANT,</p>
-                  <p> NEW DELHI - 110024</p>
+                  <p>C-159,Roxy chowk, Veer Savarkar Marg, near Chicago-Pizza, near Chicago- Pizza, Lajpat Nagar II</p>
+                  <p> New Delhi, Delhi 110024</p>
                 </div>
               </div>
 
