@@ -1,10 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: "export",
   eslint: {
     ignoreDuringBuilds: true,
   },
-  images: { unoptimized: true },
+  images: {
+    unoptimized: true,
+    formats: ["image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
+  // Enable SWC minification for smaller bundle sizes
+  swcMinify: true,
+  // Optimize production builds
+  productionBrowserSourceMaps: false,
+  // Reduce bundle size
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+  // Enable React strict mode for better performance
+  reactStrictMode: true,
+  // Optimize power consumption
+  poweredByHeader: false,
 };
 
 module.exports = nextConfig;

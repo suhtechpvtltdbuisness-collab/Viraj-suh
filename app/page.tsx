@@ -1,22 +1,31 @@
 "use client";
 
-import About from "@/components/sections/About";
-import Banner from "@/components/sections/Banner";
-import Contact from "@/components/sections/Contact";
-import DoorStepService from "@/components/sections/DoorStepService";
-import FloatingActions from "@/components/sections/FloatingActions"; // ✅ Added
-import Footer from "@/components/sections/Footer";
-import GoldCheck from "@/components/sections/GoldCheck";
 import Header from "@/components/sections/Header";
 import Hero from "@/components/sections/Hero";
-import LoanCalculatorPage from "@/components/sections/Loan";
-import SellGoldPage from "@/components/sections/SellGold";
-import Services from "@/components/sections/Services";
-import Testimonials from "@/components/sections/Testimonials";
+import Banner from "@/components/sections/Banner";
 import { Toaster } from "@/components/ui/sonner";
 import { scrollToSection } from "@/lib/utils";
 import { useEffect, useState } from "react";
-// import TestimonialsPage from "./testimonials/page";
+import dynamic from "next/dynamic";
+
+// Lazy load below-fold components for better performance
+// Using subtle loading states to maintain perceived performance
+const About = dynamic(() => import("@/components/sections/About"));
+const Contact = dynamic(() => import("@/components/sections/Contact"));
+const DoorStepService = dynamic(
+  () => import("@/components/sections/DoorStepService")
+);
+const FloatingActions = dynamic(
+  () => import("@/components/sections/FloatingActions")
+);
+const Footer = dynamic(() => import("@/components/sections/Footer"));
+const GoldCheck = dynamic(() => import("@/components/sections/GoldCheck"));
+const LoanCalculatorPage = dynamic(() => import("@/components/sections/Loan"));
+const SellGoldPage = dynamic(() => import("@/components/sections/SellGold"));
+const Services = dynamic(() => import("@/components/sections/Services"));
+const Testimonials = dynamic(
+  () => import("@/components/sections/Testimonials")
+);
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
@@ -42,23 +51,38 @@ export default function Home() {
           #1 Cash for Gold in Lajpat Nagar Delhi
         </h2>
         <p className="mt-3 text-lg text-gray-700">
-          <strong>Viraj Jewellers</strong> is Delhi most trusted destination for <strong>cash for gold in Lajpat Nagar Delhi</strong>.
-          We provide transparent XRF testing in your presence, instant
-          cash/UPI/bank transfer payment, and highest market-linked rates guaranteed.
+          <strong>Viraj Jewellers</strong> is Delhi most trusted destination for{" "}
+          <strong>cash for gold in Lajpat Nagar Delhi</strong>. We provide
+          transparent XRF testing in your presence, instant cash/UPI/bank
+          transfer payment, and highest market-linked rates guaranteed.
         </p>
         <div className="mt-6 bg-yellow-50 p-5 rounded-lg border border-yellow-100">
-          <h3 className="text-xl font-semibold text-gray-900">Why We are the Best Cash for Gold Service in Lajpat Nagar Delhi:</h3>
+          <h3 className="text-xl font-semibold text-gray-900">
+            Why We are the Best Cash for Gold Service in Lajpat Nagar Delhi:
+          </h3>
           <ul className="mt-3 list-disc pl-6 text-gray-700 space-y-2">
-            <li>Highest gold rates in Lajpat Nagar Delhi - guaranteed 5-10% above market average</li>
-            <li>Same-day cash payment with proper documentation and KYC compliance</li>
-            <li>100% transparent XRF testing in your presence for accurate gold evaluation</li>
+            <li>
+              Highest gold rates in Lajpat Nagar Delhi - guaranteed 5-10% above
+              market average
+            </li>
+            <li>
+              Same-day cash payment with proper documentation and KYC compliance
+            </li>
+            <li>
+              100% transparent XRF testing in your presence for accurate gold
+              evaluation
+            </li>
             <li>Private evaluation area and secure transaction process</li>
-            <li>Trusted since 1995 with 10,000+ satisfied customers across Delhi NCR</li>
+            <li>
+              Trusted since 1995 with 10,000+ satisfied customers across Delhi
+              NCR
+            </li>
           </ul>
         </div>
         <p className="mt-4 text-gray-700">
-          Serving all areas in and around <strong>Lajpat Nagar Delhi</strong> including Nehru Place, CR Park, Greater Kailash,
-          Defence Colony, Kalkaji, and South Delhi with the best cash for gold rates.
+          Serving all areas in and around <strong>Lajpat Nagar Delhi</strong>{" "}
+          including Nehru Place, CR Park, Greater Kailash, Defence Colony,
+          Kalkaji, and South Delhi with the best cash for gold rates.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <a
@@ -73,10 +97,16 @@ export default function Home() {
           >
             Best Gold Buyer in Lajpat Nagar
           </a>
-          <a href="/gold-rates-today" className="rounded border px-5 py-3 hover:bg-gray-50">
+          <a
+            href="/gold-rates-today"
+            className="rounded border px-5 py-3 hover:bg-gray-50"
+          >
             Gold Rates Today
           </a>
-          <a href="/blog/cash-for-gold-lajpat-nagar-delhi-guide" className="rounded border px-5 py-3 hover:bg-gray-50">
+          <a
+            href="/blog/cash-for-gold-lajpat-nagar-delhi-guide"
+            className="rounded border px-5 py-3 hover:bg-gray-50"
+          >
             Cash for Gold Guide
           </a>
         </div>

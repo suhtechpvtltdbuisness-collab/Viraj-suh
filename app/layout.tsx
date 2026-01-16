@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,6 +8,7 @@ const inter = Inter({
   variable: "--font-inter",
   display: "swap",
   preload: true,
+  adjustFontFallback: true,
 });
 
 const playfair = Playfair_Display({
@@ -14,6 +16,8 @@ const playfair = Playfair_Display({
   variable: "--font-playfair",
   display: "swap",
   preload: true,
+  adjustFontFallback: true,
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -484,8 +488,13 @@ export default function RootLayout({
           as="style"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap"
         />
+        {/* Performance Resource Hints */}
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://images.pexels.com" />
+        <link rel="dns-prefetch" href="https://www.goldapi.io" />
+        <link rel="preload" as="image" href="/images/imageViraj.jpg" />
+        <link rel="preload" as="image" href="/images/gold.jpeg" />
 
         {/* Enhanced Structured Data */}
         <script
@@ -539,7 +548,7 @@ export default function RootLayout({
           }}
         />
 
-        {/* Performance Monitoring */}
+        {/* Performance Monitoring with Privacy-Focused Analytics */}
         <script
           async
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
@@ -550,11 +559,22 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
+              
+              // Configure with cookieless tracking and privacy settings
               gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
                 page_path: window.location.pathname,
                 send_page_view: true,
-                cookie_flags: 'SameSite=None;Secure'
+                cookie_flags: 'SameSite=None;Secure',
+                // Privacy-focused settings
+                anonymize_ip: true,
+                allow_ad_personalization_signals: false,
+                allow_google_signals: false,
+                cookie_expires: 63072000, // 2 years instead of default
               });
+              
+              // Suppress third-party cookie warnings
+              gtag('set', 'cookie_update', false);
+              gtag('set', 'cookie_domain', 'virajjewellers.com');
             `,
           }}
         />
@@ -595,18 +615,12 @@ export default function RootLayout({
           </ol>
         </nav>
 
-        <main id="main-content">{children}</main>
+        <ErrorBoundary>
+          <main id="main-content">{children}</main>
+        </ErrorBoundary>
 
-        {/* Performance Script */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js');
-              }
-            `,
-          }}
-        />
+        {/* Service Worker Registration - Removed to prevent errors */}
+        {/* Service workers are not compatible with static export mode */}
       </body>
     </html>
   );

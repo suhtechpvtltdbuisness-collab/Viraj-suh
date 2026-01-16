@@ -42,8 +42,8 @@ export default function Hero({ scrollY }: HeroProps) {
 
   // Jewelry images for sliding background
   const jewelryImages = [
-    "https://images.pexels.com/photos/1232931/pexels-photo-1232931.jpeg",
-    "https://images.pexels.com/photos/1454171/pexels-photo-1454171.jpeg",
+    "https://images.pexels.com/photos/1232931/pexels-photo-1232931.jpeg?auto=compress&cs=tinysrgb&w=1920",
+    "https://images.pexels.com/photos/1454171/pexels-photo-1454171.jpeg?auto=compress&cs=tinysrgb&w=1920",
     "images/gold.jpeg",
   ];
 
@@ -114,7 +114,10 @@ export default function Hero({ scrollY }: HeroProps) {
         toast.success("Live gold prices updated!");
       }
     } catch (error) {
-      console.error("Failed to fetch gold prices:", error);
+      // Silently handle error in production, log only in development
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to fetch gold prices:", error);
+      }
       toast.error("Using cached rates");
     } finally {
       setPricesLoading(false);
@@ -155,6 +158,8 @@ export default function Hero({ scrollY }: HeroProps) {
               fill
               sizes="100vw"
               priority={index === 0}
+              quality={index === 0 ? 90 : 75}
+              loading={index === 0 ? "eager" : "lazy"}
               className="object-cover brightness-110 contrast-110 saturate-110"
             />
           </div>
@@ -165,14 +170,11 @@ export default function Hero({ scrollY }: HeroProps) {
         <div className="absolute inset-0 bg-black/20"></div>
       </div>
 
-      {/* Floating Golden Particles */}
-      <div className="absolute inset-0">
+      {/* Floating Golden Particles - Reduced for better performance */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-1/4 left-1/4 w-3 h-3 bg-yellow-400 rounded-full animate-pulse shadow-lg"></div>
         <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-amber-300 rounded-full animate-ping shadow-lg"></div>
         <div className="absolute bottom-1/4 left-1/3 w-4 h-4 bg-yellow-300 rounded-full animate-pulse shadow-lg"></div>
-        <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-amber-400 rounded-full animate-ping shadow-lg"></div>
-        <div className="absolute top-3/4 left-1/2 w-3 h-3 bg-yellow-500 rounded-full animate-pulse shadow-lg"></div>
-        <div className="absolute top-[15%] right-1/2 w-1 h-1 bg-amber-200 rounded-full animate-ping shadow-lg"></div>
       </div>
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-12 pt-16 sm:pt-20 lg:pt-24 pb-12 lg:pb-20">

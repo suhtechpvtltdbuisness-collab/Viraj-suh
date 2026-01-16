@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Clock, RefreshCw, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -14,16 +14,34 @@ interface GoldRate {
 
 export default function GoldRatesTodayPage() {
   const [rates, setRates] = useState<GoldRate[]>([
-    { purity: "24K", price: "₹10,609", priceNum: 10609, change: "+0.68%", trend: "up" },
-    { purity: "22K", price: "₹9,725", priceNum: 9725, change: "+0.68%", trend: "up" },
-    { purity: "18K", price: "₹7,957", priceNum: 7957, change: "+0.65%", trend: "up" },
+    {
+      purity: "24K",
+      price: "₹10,609",
+      priceNum: 10609,
+      change: "+0.68%",
+      trend: "up",
+    },
+    {
+      purity: "22K",
+      price: "₹9,725",
+      priceNum: 9725,
+      change: "+0.68%",
+      trend: "up",
+    },
+    {
+      purity: "18K",
+      price: "₹7,957",
+      priceNum: 7957,
+      change: "+0.65%",
+      trend: "up",
+    },
   ]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  const today = new Date().toLocaleDateString('en-IN', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+  const today = new Date().toLocaleDateString("en-IN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   // Fetch live gold prices from GoldAPI.io
@@ -35,52 +53,62 @@ export default function GoldRatesTodayPage() {
 
       const response = await fetch(`${GOLD_API_URL}/XAU/INR`, {
         headers: {
-          'x-access-token': GOLD_API_KEY,
-          'Content-Type': 'application/json'
-        }
+          "x-access-token": GOLD_API_KEY,
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch gold prices');
+        throw new Error("Failed to fetch gold prices");
       }
 
       const data = await response.json();
 
       if (data && data.price_gram_24k) {
-        const changePercent = data.chp ? `${data.chp > 0 ? '+' : ''}${data.chp.toFixed(2)}%` : "+0.00%";
+        const changePercent = data.chp
+          ? `${data.chp > 0 ? "+" : ""}${data.chp.toFixed(2)}%`
+          : "+0.00%";
         const trend = data.chp >= 0 ? "up" : "down";
 
         const newRates: GoldRate[] = [
           {
             purity: "24K",
-            price: `₹${Math.round(data.price_gram_24k).toLocaleString('en-IN')}`,
+            price: `₹${Math.round(data.price_gram_24k).toLocaleString(
+              "en-IN"
+            )}`,
             priceNum: Math.round(data.price_gram_24k),
             change: changePercent,
-            trend
+            trend,
           },
           {
             purity: "22K",
-            price: `₹${Math.round(data.price_gram_22k).toLocaleString('en-IN')}`,
+            price: `₹${Math.round(data.price_gram_22k).toLocaleString(
+              "en-IN"
+            )}`,
             priceNum: Math.round(data.price_gram_22k),
             change: changePercent,
-            trend
+            trend,
           },
           {
             purity: "18K",
-            price: `₹${Math.round(data.price_gram_18k).toLocaleString('en-IN')}`,
+            price: `₹${Math.round(data.price_gram_18k).toLocaleString(
+              "en-IN"
+            )}`,
             priceNum: Math.round(data.price_gram_18k),
             change: changePercent,
-            trend
+            trend,
           },
         ];
 
         setRates(newRates);
         setLastUpdated(new Date());
-        toast.success('Live gold prices updated!');
+        toast.success("Live gold prices updated!");
       }
     } catch (error) {
-      console.error('Failed to fetch gold prices:', error);
-      toast.error('Using cached rates');
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to fetch gold prices:", error);
+      }
+      toast.error("Using cached rates");
     } finally {
       setLoading(false);
     }
@@ -105,18 +133,18 @@ export default function GoldRatesTodayPage() {
     description: "Live gold rate per gram for 24K/22K in Lajpat Nagar, Delhi",
     dateModified: new Date().toISOString(),
     creator: { "@type": "Organization", name: "Viraj Jewellers" },
-    temporalCoverage: new Date().toISOString().split('T')[0],
+    temporalCoverage: new Date().toISOString().split("T")[0],
     about: {
       "@type": "Product",
       name: "Gold",
-      offers: rates.map(r => ({
+      offers: rates.map((r) => ({
         "@type": "Offer",
         price: r.priceNum,
         priceCurrency: "INR",
         availability: "https://schema.org/InStock",
-        description: `${r.purity} Gold per gram`
-      }))
-    }
+        description: `${r.purity} Gold per gram`,
+      })),
+    },
   };
 
   return (
@@ -133,7 +161,8 @@ export default function GoldRatesTodayPage() {
                 </h1>
                 <p className="mt-2 text-amber-100 flex items-center gap-2">
                   <Clock className="h-4 w-4" />
-                  Updated: {lastUpdated ? lastUpdated.toLocaleString('en-IN') : today}
+                  Updated:{" "}
+                  {lastUpdated ? lastUpdated.toLocaleString("en-IN") : today}
                 </p>
               </div>
               <button
@@ -142,7 +171,9 @@ export default function GoldRatesTodayPage() {
                 className="bg-white/20 hover:bg-white/30 backdrop-blur-md rounded-full p-3 transition-all duration-300 hover:scale-110 disabled:opacity-50"
                 title="Refresh prices"
               >
-                <RefreshCw className={`h-6 w-6 ${loading ? 'animate-spin' : ''}`} />
+                <RefreshCw
+                  className={`h-6 w-6 ${loading ? "animate-spin" : ""}`}
+                />
               </button>
             </div>
           </div>
@@ -150,9 +181,15 @@ export default function GoldRatesTodayPage() {
           {/* Live Indicator */}
           <div className="bg-green-50 border-b border-green-200 px-6 py-3">
             <div className="flex items-center justify-center gap-2">
-              <span className={`inline-block w-2 h-2 rounded-full ${loading ? 'bg-yellow-500' : 'bg-green-500'} animate-pulse`}></span>
+              <span
+                className={`inline-block w-2 h-2 rounded-full ${
+                  loading ? "bg-yellow-500" : "bg-green-500"
+                } animate-pulse`}
+              ></span>
               <span className="text-sm font-medium text-green-700">
-                {loading ? 'Updating live prices...' : 'Live Market Rates • Powered by Suhtech'}
+                {loading
+                  ? "Updating live prices..."
+                  : "Live Market Rates • Powered by Suhtech"}
               </span>
             </div>
           </div>
@@ -172,17 +209,23 @@ export default function GoldRatesTodayPage() {
                     </span>
                   </div>
 
-                  <p className="text-gray-900 font-bold text-lg mb-2">{r.purity} Gold</p>
-                  <p className="text-amber-700 text-3xl font-bold mb-2">{r.price}</p>
+                  <p className="text-gray-900 font-bold text-lg mb-2">
+                    {r.purity} Gold
+                  </p>
+                  <p className="text-amber-700 text-3xl font-bold mb-2">
+                    {r.price}
+                  </p>
                   <p className="text-gray-600 text-sm mb-2">per gram</p>
 
                   {/* Change Indicator */}
-                  <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${
-                    r.trend === 'up'
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-red-100 text-red-700'
-                  }`}>
-                    {r.change} {r.trend === 'up' ? '↗️' : '↘️'}
+                  <div
+                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${
+                      r.trend === "up"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {r.change} {r.trend === "up" ? "↗️" : "↘️"}
                   </div>
                 </div>
               ))}
@@ -207,15 +250,23 @@ export default function GoldRatesTodayPage() {
             {/* Additional Info */}
             <div className="mt-8 grid md:grid-cols-3 gap-4">
               <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-                <p className="text-blue-900 font-semibold mb-1">✓ XRF Testing</p>
-                <p className="text-blue-700 text-sm">On-spot purity verification</p>
+                <p className="text-blue-900 font-semibold mb-1">
+                  ✓ XRF Testing
+                </p>
+                <p className="text-blue-700 text-sm">
+                  On-spot purity verification
+                </p>
               </div>
               <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-                <p className="text-green-900 font-semibold mb-1">✓ Instant Payment</p>
+                <p className="text-green-900 font-semibold mb-1">
+                  ✓ Instant Payment
+                </p>
                 <p className="text-green-700 text-sm">Cash/UPI/Bank transfer</p>
               </div>
               <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
-                <p className="text-purple-900 font-semibold mb-1">✓ Best Rates</p>
+                <p className="text-purple-900 font-semibold mb-1">
+                  ✓ Best Rates
+                </p>
                 <p className="text-purple-700 text-sm">Market-linked pricing</p>
               </div>
             </div>
@@ -223,8 +274,8 @@ export default function GoldRatesTodayPage() {
             {/* Disclaimer */}
             <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
               <p className="text-xs text-gray-600 text-center">
-                Prices are indicative and subject to change. Final rates determined after purity testing.
-                Auto-refreshes every 5 minutes.
+                Prices are indicative and subject to change. Final rates
+                determined after purity testing. Auto-refreshes every 5 minutes.
               </p>
             </div>
           </div>

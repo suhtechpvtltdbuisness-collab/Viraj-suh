@@ -45,7 +45,10 @@ export default function Header() {
         setLiveGoldPrice(`₹${price24k.toLocaleString("en-IN")}`);
       }
     } catch (error) {
-      console.error("Failed to fetch gold prices:", error);
+      // Silently handle error in production
+      if (process.env.NODE_ENV === "development") {
+        console.error("Failed to fetch gold prices:", error);
+      }
     } finally {
       setPricesLoading(false);
     }
