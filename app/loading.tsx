@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Loading() {
@@ -19,10 +20,13 @@ export default function Loading() {
         <div className="relative">
           <div className="w-23 h-23 rounded-full bg-gradient-to-br from-yellow-500 to-amber-600 flex items-center justify-center shadow-2xl animate-pulse">
             <span className="text-white font-bold text-4xl font-playfair">
-              <img
-                className="rounded-full w-[90px] h-[90px]"
-                src="images/virajLogo.jpg"
-                alt="Viraj Logo"
+              <Image
+                className="rounded-full"
+                src="/images/virajLogo.jpg"
+                alt="Viraj Jewellers - Best Cash for Gold Buyer in Lajpat Nagar Delhi"
+                width={90}
+                height={90}
+                priority
               />
             </span>
           </div>

@@ -10,5 +10,5 @@ Disallow: /draft/
 User-agent: Googlebot
 Allow: /
 
-Sitemap: https://www.virajjeweller.com//sitemap.xml
+Sitemap: https://virajjewellers.com/sitemap.xml
 

@@ -56,8 +56,7 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title:
-      "Cash for Gold Lajpat Nagar | Best Rates in Delhi NCR",
+    title: "Cash for Gold Lajpat Nagar | Best Rates in Delhi NCR",
     description:
       "Sell gold for instant cash in Lajpat Nagar, Delhi. Trusted gold buyers with transparent testing and same-day payment.",
     type: "website",
@@ -80,7 +79,9 @@ export const metadata: Metadata = {
     title: "Cash for Gold Lajpat Nagar | Best Rates in Delhi NCR",
     description:
       "Sell gold for instant cash in Lajpat Nagar, Delhi. Transparent testing and same-day payout.",
-    images: ["https://virajjewellers.com/images/cash-for-gold-lajpat-nagar-twitter.jpg"],
+    images: [
+      "https://virajjewellers.com/images/cash-for-gold-lajpat-nagar-twitter.jpg",
+    ],
     creator: "@virajjewellers",
     site: "@virajjewellers",
   },
@@ -112,7 +113,8 @@ export const metadata: Metadata = {
     yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION || undefined,
     yahoo: process.env.NEXT_PUBLIC_YAHOO_VERIFICATION || undefined,
     other: {
-      "facebook-domain-verification": process.env.NEXT_PUBLIC_FB_DOMAIN_VERIFICATION || "",
+      "facebook-domain-verification":
+        process.env.NEXT_PUBLIC_FB_DOMAIN_VERIFICATION || "",
     },
   },
 
@@ -149,7 +151,7 @@ export default function RootLayout({
         hasCredential: {
           "@type": "EducationalOccupationalCredential",
           name: "Authorized SBI Approver",
-          credentialCategory: "Professional Certification"
+          credentialCategory: "Professional Certification",
         },
         award: ["Authorized SBI Approver", "Trusted Since 1985"],
         sameAs: [
@@ -191,7 +193,20 @@ export default function RootLayout({
           longitude: 77.2431,
         },
         openingHoursSpecification: [
-          { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], opens: "10:00", closes: "19:00" }
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday",
+            ],
+            opens: "10:00",
+            closes: "19:00",
+          },
         ],
         paymentAccepted: [
           "Cash",
@@ -224,19 +239,43 @@ export default function RootLayout({
           "@type": "AggregateRating",
           ratingValue: "4.8",
           reviewCount: "247",
-        }
+        },
       },
       {
         "@type": "OfferCatalog",
         name: "Cash for Gold Services",
         itemListElement: [
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Cash for Gold" } },
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Sell Old Gold" } },
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Gold Buyer Delhi" } },
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Instant Cash for Silver" } },
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Diamond Buyers" } },
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Release Pledged Gold" } },
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Old Gold Exchange" } }
+          {
+            "@type": "Offer",
+            itemOffered: { "@type": "Service", name: "Cash for Gold" },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: { "@type": "Service", name: "Sell Old Gold" },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: { "@type": "Service", name: "Gold Buyer Delhi" },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: "Instant Cash for Silver",
+            },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: { "@type": "Service", name: "Diamond Buyers" },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: { "@type": "Service", name: "Release Pledged Gold" },
+          },
+          {
+            "@type": "Offer",
+            itemOffered: { "@type": "Service", name: "Old Gold Exchange" },
+          },
         ],
       },
       {
@@ -266,8 +305,18 @@ export default function RootLayout({
         "@type": "BreadcrumbList",
         "@id": "https://virajjewellers.com/#breadcrumb",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://virajjewellers.com" },
-          { "@type": "ListItem", position: 2, name: "Cash for Gold", item: "https://virajjewellers.com/services/cash-for-gold" },
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://virajjewellers.com",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Cash for Gold",
+            item: "https://virajjewellers.com/services/cash-for-gold",
+          },
         ],
       },
       {
@@ -492,14 +541,19 @@ export default function RootLayout({
 
         {/* Performance Monitoring */}
         <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+        />
+        <script
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'GA_MEASUREMENT_ID', {
-                page_title: 'Cash for Gold Lajpat Nagar - Viraj Jewellers',
-                custom_map: {'dimension1': 'cash_for_gold_page'}
+              gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+                page_path: window.location.pathname,
+                send_page_view: true,
+                cookie_flags: 'SameSite=None;Secure'
               });
             `,
           }}

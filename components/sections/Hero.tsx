@@ -3,7 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { scrollToSection } from "@/lib/utils";
-import { ArrowRight, Award, Clock, RefreshCw, Shield, TrendingUp } from "lucide-react";
+import {
+  ArrowRight,
+  Award,
+  Clock,
+  RefreshCw,
+  Shield,
+  TrendingUp,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -57,20 +64,22 @@ export default function Hero({ scrollY }: HeroProps) {
 
       const response = await fetch(`${GOLD_API_URL}/XAU/INR`, {
         headers: {
-          'x-access-token': GOLD_API_KEY,
-          'Content-Type': 'application/json'
-        }
+          "x-access-token": GOLD_API_KEY,
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch gold prices');
+        throw new Error("Failed to fetch gold prices");
       }
 
       const data = await response.json();
 
       if (data && data.price_gram_24k) {
         // Calculate percentage change
-        const changePercent = data.chp ? `${data.chp > 0 ? '+' : ''}${data.chp.toFixed(2)}%` : "+0.00%";
+        const changePercent = data.chp
+          ? `${data.chp > 0 ? "+" : ""}${data.chp.toFixed(2)}%`
+          : "+0.00%";
         const trend = data.chp >= 0 ? "up" : "down";
 
         const newRates: MarketRate[] = [
@@ -78,35 +87,35 @@ export default function Hero({ scrollY }: HeroProps) {
             metal: "Gold (24K)",
             rate: `₹${Math.round(data.price_gram_24k).toLocaleString()}`,
             change: changePercent,
-            trend
+            trend,
           },
           {
             metal: "Gold (22K)",
             rate: `₹${Math.round(data.price_gram_22k).toLocaleString()}`,
             change: changePercent,
-            trend
+            trend,
           },
           {
             metal: "Gold (18K)",
             rate: `₹${Math.round(data.price_gram_18k).toLocaleString()}`,
             change: changePercent,
-            trend
+            trend,
           },
           {
             metal: "Gold (14K)",
             rate: `₹${Math.round(data.price_gram_14k).toLocaleString()}`,
             change: changePercent,
-            trend
+            trend,
           },
         ];
 
         setMarketRates(newRates);
         setLastUpdated(new Date());
-        toast.success('Live gold prices updated!');
+        toast.success("Live gold prices updated!");
       }
     } catch (error) {
-      console.error('Failed to fetch gold prices:', error);
-      toast.error('Using cached rates');
+      console.error("Failed to fetch gold prices:", error);
+      toast.error("Using cached rates");
     } finally {
       setPricesLoading(false);
     }
@@ -140,7 +149,9 @@ export default function Hero({ scrollY }: HeroProps) {
           >
             <Image
               src={image}
-              alt={`Jewelry ${index + 1}`}
+              alt={`Gold Jewelry Display ${
+                index + 1
+              } - Viraj Jewellers Lajpat Nagar Cash for Gold Services`}
               fill
               sizes="100vw"
               priority={index === 0}
@@ -292,7 +303,9 @@ export default function Hero({ scrollY }: HeroProps) {
                       Live Market Rates
                     </CardTitle>
                     <p className="text-xs sm:text-sm text-amber-100">
-                      {lastUpdated ? `Updated ${lastUpdated.toLocaleTimeString()}` : 'Loading...'}
+                      {lastUpdated
+                        ? `Updated ${lastUpdated.toLocaleTimeString()}`
+                        : "Loading..."}
                     </p>
                   </div>
                   <Button
@@ -302,14 +315,24 @@ export default function Hero({ scrollY }: HeroProps) {
                     onClick={fetchLiveGoldPrices}
                     disabled={pricesLoading}
                   >
-                    <RefreshCw className={`h-4 w-4 ${pricesLoading ? 'animate-spin' : ''}`} />
+                    <RefreshCw
+                      className={`h-4 w-4 ${
+                        pricesLoading ? "animate-spin" : ""
+                      }`}
+                    />
                   </Button>
                 </div>
               </CardHeader>
               <CardContent className="p-4 sm:p-6 space-y-4">
                 <div className="text-xs sm:text-sm text-gray-600 mb-3 sm:mb-4 text-center">
-                  <span className={`inline-block w-2 h-2 rounded-full mr-2 ${pricesLoading ? 'bg-yellow-500' : 'bg-green-500'} animate-pulse`}></span>
-                  {pricesLoading ? 'Updating prices...' : 'Live Rates • Per gram prices'}
+                  <span
+                    className={`inline-block w-2 h-2 rounded-full mr-2 ${
+                      pricesLoading ? "bg-yellow-500" : "bg-green-500"
+                    } animate-pulse`}
+                  ></span>
+                  {pricesLoading
+                    ? "Updating prices..."
+                    : "Live Rates • Per gram prices"}
                 </div>
 
                 {marketRates.map((rate, index) => (

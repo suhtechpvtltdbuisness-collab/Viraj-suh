@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { scrollToSection } from "@/lib/utils";
 import { DollarSign, MapPin, Menu, Phone, RefreshCw, X } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Header() {
@@ -28,23 +29,23 @@ export default function Header() {
 
       const response = await fetch(`${GOLD_API_URL}/XAU/INR`, {
         headers: {
-          'x-access-token': GOLD_API_KEY,
-          'Content-Type': 'application/json'
-        }
+          "x-access-token": GOLD_API_KEY,
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch gold prices');
+        throw new Error("Failed to fetch gold prices");
       }
 
       const data = await response.json();
 
       if (data && data.price_gram_24k) {
         const price24k = Math.round(data.price_gram_24k);
-        setLiveGoldPrice(`₹${price24k.toLocaleString('en-IN')}`);
+        setLiveGoldPrice(`₹${price24k.toLocaleString("en-IN")}`);
       }
     } catch (error) {
-      console.error('Failed to fetch gold prices:', error);
+      console.error("Failed to fetch gold prices:", error);
     } finally {
       setPricesLoading(false);
     }
@@ -110,7 +111,7 @@ export default function Header() {
           </div>
 
           <div className="hidden md:flex items-center gap-2 text-xs sm:text-sm">
-            <span className={`${pricesLoading ? 'animate-pulse' : ''}`}>
+            <span className={`${pricesLoading ? "animate-pulse" : ""}`}>
               🔥 Best Gold Prices Today: {liveGoldPrice}/gram
             </span>
             <button
@@ -119,7 +120,9 @@ export default function Header() {
               className="ml-1 hover:scale-110 transition-transform duration-300 disabled:opacity-50"
               title="Refresh live price"
             >
-              <RefreshCw className={`h-3 w-3 ${pricesLoading ? 'animate-spin' : ''}`} />
+              <RefreshCw
+                className={`h-3 w-3 ${pricesLoading ? "animate-spin" : ""}`}
+              />
             </button>
           </div>
         </div>
@@ -135,10 +138,13 @@ export default function Header() {
           >
             <div className="relative group w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-amber-400 via-yellow-500 to-amber-700 p-[2px] shadow-lg hover:shadow-gold transition-all duration-500">
               <div className="w-full h-full rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center overflow-hidden">
-                <img
+                <Image
                   src="/images/imageViraj.jpg"
-                  alt="Viraj Logo"
+                  alt="Viraj Jewellers Lajpat Nagar - Trusted Gold Buyer in Delhi Since 1985"
+                  width={80}
+                  height={80}
                   className="w-full h-full rounded-full object-cover border-2 border-white shadow-md group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500 ease-in-out"
+                  priority
                 />
               </div>
             </div>
@@ -215,7 +221,11 @@ export default function Header() {
                   <span className="text-xs font-medium text-gray-700">
                     🔥 Live Gold Price:
                   </span>
-                  <span className={`text-sm font-bold text-amber-700 ${pricesLoading ? 'animate-pulse' : ''}`}>
+                  <span
+                    className={`text-sm font-bold text-amber-700 ${
+                      pricesLoading ? "animate-pulse" : ""
+                    }`}
+                  >
                     {liveGoldPrice}/g
                   </span>
                 </div>
@@ -224,7 +234,11 @@ export default function Header() {
                   disabled={pricesLoading}
                   className="hover:scale-110 transition-transform duration-300 disabled:opacity-50"
                 >
-                  <RefreshCw className={`h-3 w-3 text-amber-600 ${pricesLoading ? 'animate-spin' : ''}`} />
+                  <RefreshCw
+                    className={`h-3 w-3 text-amber-600 ${
+                      pricesLoading ? "animate-spin" : ""
+                    }`}
+                  />
                 </button>
               </div>
             </div>

@@ -6,503 +6,229 @@
 
   <!-- Main Pages -->
   <url>
-    <loc>https://www.virajjeweller.com/</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/about</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/about</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/contact</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/contact</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/testimonials</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/testimonials</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/gallery</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <loc>https://virajjewellers.com/faq</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
   <!-- High Priority Service Pages -->
   <url>
-    <loc>https://www.virajjeweller.com/best-gold-buyer-lajpat-nagar</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/best-gold-buyer-lajpat-nagar</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/gold-rates-today</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/cash-for-gold-delhi</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/gold-rates-today</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- Core Services -->
   <url>
-    <loc>https://www.virajjeweller.com/services</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/services/cash-for-gold</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://virajjewellers.com/services/sell-gold-lajpat-nagar</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/services/cash-for-gold</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/services/gold-buyer-delhi</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/services/sell-gold-lajpat-nagar</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/services/gold-buyer-delhi</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/services/instant-cash-silver</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/services/instant-cash-silver</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/services/diamond-buyers</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/services/diamond-buyers</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/services/release-pledged-gold</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/services/release-pledged-gold</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/services/old-gold-exchange</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/services/old-gold-exchange</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/services/gold-coin-buying</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/services/platinum-buyers</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/services/antique-jewelry-buyers</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
   </url>
 
   <!-- Location Pages -->
   <url>
-    <loc>https://www.virajjeweller.com/locations</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/locations/lajpat-nagar</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/locations/lajpat-nagar</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/locations/south-delhi</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/locations/south-delhi</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/locations/central-delhi</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/locations/noida</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/locations/karol-bagh</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/locations/sarojini-nagar</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/locations/cp-connaught-place</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/locations/greater-kailash</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/locations/defence-colony</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 
   <!-- Blog Section -->
   <url>
-    <loc>https://www.virajjeweller.com/blog</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>daily</changefreq>
+    <loc>https://virajjewellers.com/blog</loc>
+    <lastmod>2026-01-16</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- Blog Posts - How-to Guides -->
   <url>
-    <loc>https://www.virajjeweller.com/blog/how-to-sell-gold-in-lajpat-nagar-howto</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/blog/how-to-sell-gold-in-lajpat-nagar-howto</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/blog/how-to-get-best-price-for-gold-in-delhi</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/blog/cash-for-gold-lajpat-nagar-delhi-guide</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/blog/how-to-sell-old-gold-in-delhi</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/blog/how-to-get-best-price-for-gold-in-delhi</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/blog/how-to-choose-gold-buyer-in-delhi</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/blog/how-to-sell-old-gold-in-delhi</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/blog/how-to-identify-pure-gold</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/blog/how-to-choose-gold-buyer-in-delhi</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/blog/how-to-calculate-gold-value</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Blog Posts - Informational -->
-  <url>
-    <loc>https://www.virajjeweller.com/blog/why-choose-lajpat-nagar-for-gold-selling</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/blog/why-choose-lajpat-nagar-for-gold-selling</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/blog/gold-rate-per-gram-delhi-guide</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/blog/cash-for-gold-near-me-tips</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/blog/gold-rate-per-gram-delhi-guide</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/blog/instant-cash-for-silver-delhi</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/blog/cash-for-gold-near-me-tips</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/blog/diamond-buyers-delhi-checklist</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/blog/instant-cash-for-silver-delhi</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/blog/release-pledged-gold-process</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/blog/diamond-buyers-delhi-checklist</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.virajjeweller.com/blog/avoid-common-mistakes-when-selling-gold</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/blog/release-pledged-gold-process</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
-  <!-- Additional Blog Content -->
   <url>
-    <loc>https://www.virajjeweller.com/blog/gold-purity-testing-methods</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/blog/avoid-common-mistakes-when-selling-gold</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/blog/understanding-gold-hallmarks</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/blog/gold-vs-silver-investment-guide</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/blog/diamond-grading-basics</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/blog/seasonal-gold-price-trends</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/blog/best-time-to-sell-gold</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <!-- Product Categories -->
-  <url>
-    <loc>https://www.virajjeweller.com/buy/gold-jewelry</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
 
+  <!-- News Section -->
   <url>
-    <loc>https://www.virajjeweller.com/buy/gold-coins</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/buy/silver-jewelry</loc>
-    <lastmod>2025-09-26</lastmod>
+    <loc>https://virajjewellers.com/News</loc>
+    <lastmod>2026-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
-  <url>
-    <loc>https://www.virajjeweller.com/buy/diamond-jewelry</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/buy/platinum-jewelry</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/buy/antique-jewelry</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
-  <!-- Tools & Calculators -->
-  <url>
-    <loc>https://www.virajjeweller.com/tools/gold-calculator</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/tools/silver-calculator</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/tools/diamond-value-estimator</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/tools/purity-checker</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <!-- Legal & Support Pages -->
-  <url>
-    <loc>https://www.virajjeweller.com/privacy-policy</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/terms-conditions</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/refund-policy</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/faq</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/support</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
-  <!-- Additional Service Areas -->
-  <url>
-    <loc>https://www.virajjeweller.com/areas/delhi-ncr</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/areas/gurgaon</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/areas/noida</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/areas/faridabad</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <!-- Special Offers & News -->
-  <url>
-    <loc>https://www.virajjeweller.com/offers</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/news</loc>
-    <lastmod>2025-09-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://www.virajjeweller.com/careers</loc>
-    <lastmod>2025-09-26</lastmod>
+</urlset>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
