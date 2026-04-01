@@ -130,6 +130,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const googleAdsId = "AW-17877486087";
+
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -548,10 +550,10 @@ export default function RootLayout({
           }}
         />
 
-        {/* Performance Monitoring with Privacy-Focused Analytics */}
+        {/* Google Ads / Analytics Tag */}
         <script
           async
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+          src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
         />
         <script
           dangerouslySetInnerHTML={{
@@ -559,18 +561,26 @@ export default function RootLayout({
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              
-              // Configure with cookieless tracking and privacy settings
+
+              // Google Ads conversion tracking
+              gtag('config', '${googleAdsId}');
+
+              // Configure GA only when ID is provided
+              ${
+                process.env.NEXT_PUBLIC_GA_ID
+                  ? `
               gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
                 page_path: window.location.pathname,
                 send_page_view: true,
                 cookie_flags: 'SameSite=None;Secure',
-                // Privacy-focused settings
                 anonymize_ip: true,
                 allow_ad_personalization_signals: false,
                 allow_google_signals: false,
-                cookie_expires: 63072000, // 2 years instead of default
+                cookie_expires: 63072000,
               });
+              `
+                  : ``
+              }
               
               // Suppress third-party cookie warnings
               gtag('set', 'cookie_update', false);
