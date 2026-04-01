@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { scrollToSection } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+import Script from "next/script";
 
 // Lazy load below-fold components for better performance
 // Using subtle loading states to maintain perceived performance
@@ -29,6 +30,8 @@ const Testimonials = dynamic(
 
 export default function Home() {
   const [scrollY, setScrollY] = useState(0);
+  const adsenseClient = "ca-pub-xxxxxxxxxxxxxxxx";
+  const adsenseSlot = "1234567890";
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -39,6 +42,37 @@ export default function Home() {
   useEffect(() => {
     (window as any).scrollToSection = scrollToSection;
   }, []);
+
+  useEffect(() => {
+    if (!adsenseClient || !adsenseSlot) return;
+
+    let attempts = 0;
+    const maxAttempts = 15;
+
+    const initializeAd = () => {
+      const adElement = document.getElementById("home-map-adsense-slot");
+      if (!adElement) return;
+
+      const width = adElement.getBoundingClientRect().width;
+      if (width <= 0 && attempts < maxAttempts) {
+        attempts += 1;
+        window.setTimeout(initializeAd, 200);
+        return;
+      }
+
+      if (adElement.getAttribute("data-adsbygoogle-status")) return;
+
+      try {
+        ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push(
+          {}
+        );
+      } catch {
+        // Ignore duplicate/early push errors from ad script loading race.
+      }
+    };
+
+    initializeAd();
+  }, [adsenseClient, adsenseSlot]);
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
@@ -135,6 +169,26 @@ export default function Home() {
       <div id="contact">
         <Contact />
       </div>
+      <section className="mt-10 px-4">
+        <div className="mx-auto max-w-5xl rounded border border-yellow-200 bg-white p-4">
+          <Script
+            id="adsense-js"
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+          <ins
+            id="home-map-adsense-slot"
+            className="adsbygoogle"
+            style={{ display: "block", height: "auto" }}
+            data-ad-client={adsenseClient}
+            data-ad-slot={adsenseSlot}
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          />
+        </div>
+      </section>
       {/* Map Embed on Homepage */}
       <section className="mt-10 px-4 pb-8">
         <div className="mx-auto max-w-5xl h-80 w-full overflow-hidden rounded border">

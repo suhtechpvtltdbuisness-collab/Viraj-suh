@@ -8,34 +8,10 @@ interface GoldRate {
   purity: string;
   price: string;
   priceNum: number;
-  change: string;
-  trend: string;
 }
 
 export default function GoldRatesTodayPage() {
-  const [rates, setRates] = useState<GoldRate[]>([
-    {
-      purity: "24K",
-      price: "₹10,609",
-      priceNum: 10609,
-      change: "+0.68%",
-      trend: "up",
-    },
-    {
-      purity: "22K",
-      price: "₹9,725",
-      priceNum: 9725,
-      change: "+0.68%",
-      trend: "up",
-    },
-    {
-      purity: "18K",
-      price: "₹7,957",
-      priceNum: 7957,
-      change: "+0.65%",
-      trend: "up",
-    },
-  ]);
+  const [rates, setRates] = useState<GoldRate[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const today = new Date().toLocaleDateString("en-IN", {
@@ -44,18 +20,13 @@ export default function GoldRatesTodayPage() {
     day: "numeric",
   });
 
-  // Fetch live gold prices from GoldAPI.io
+  // Fetch live gold prices from Gold-API in INR
   const fetchLiveGoldPrices = async () => {
     setLoading(true);
     try {
-      const GOLD_API_KEY = "goldapi-19qv28smgn8uruu-io";
-      const GOLD_API_URL = "https://www.goldapi.io/api";
-
-      const response = await fetch(`${GOLD_API_URL}/XAU/INR`, {
-        headers: {
-          "x-access-token": GOLD_API_KEY,
-          "Content-Type": "application/json",
-        },
+      const response = await fetch("https://api.gold-api.com/price/XAU/INR", {
+        method: "GET",
+        cache: "no-store",
       });
 
       if (!response.ok) {
@@ -64,39 +35,42 @@ export default function GoldRatesTodayPage() {
 
       const data = await response.json();
 
-      if (data && data.price_gram_24k) {
-        const changePercent = data.chp
-          ? `${data.chp > 0 ? "+" : ""}${data.chp.toFixed(2)}%`
-          : "+0.00%";
-        const trend = data.chp >= 0 ? "up" : "down";
+      if (
+        data &&
+        (typeof data.price === "number" ||
+          typeof data.price_gram_24k === "number")
+      ) {
+        // Fallback to ounce-to-gram conversion when gram price is not returned.
+        const pricePerGram24k =
+          typeof data.price_gram_24k === "number"
+            ? data.price_gram_24k
+            : data.price / 31.1034768;
+
+        const pricePerGram22k =
+          typeof data.price_gram_22k === "number"
+            ? data.price_gram_22k
+            : pricePerGram24k * (22 / 24);
+
+        const pricePerGram18k =
+          typeof data.price_gram_18k === "number"
+            ? data.price_gram_18k
+            : pricePerGram24k * (18 / 24);
 
         const newRates: GoldRate[] = [
           {
             purity: "24K",
-            price: `₹${Math.round(data.price_gram_24k).toLocaleString(
-              "en-IN"
-            )}`,
-            priceNum: Math.round(data.price_gram_24k),
-            change: changePercent,
-            trend,
+            price: `₹${Math.round(pricePerGram24k).toLocaleString("en-IN")}`,
+            priceNum: Math.round(pricePerGram24k),
           },
           {
             purity: "22K",
-            price: `₹${Math.round(data.price_gram_22k).toLocaleString(
-              "en-IN"
-            )}`,
-            priceNum: Math.round(data.price_gram_22k),
-            change: changePercent,
-            trend,
+            price: `₹${Math.round(pricePerGram22k).toLocaleString("en-IN")}`,
+            priceNum: Math.round(pricePerGram22k),
           },
           {
             purity: "18K",
-            price: `₹${Math.round(data.price_gram_18k).toLocaleString(
-              "en-IN"
-            )}`,
-            priceNum: Math.round(data.price_gram_18k),
-            change: changePercent,
-            trend,
+            price: `₹${Math.round(pricePerGram18k).toLocaleString("en-IN")}`,
+            priceNum: Math.round(pricePerGram18k),
           },
         ];
 
@@ -119,9 +93,12 @@ export default function GoldRatesTodayPage() {
     fetchLiveGoldPrices();
 
     // Auto-refresh every 5 minutes
-    const interval = setInterval(() => {
-      fetchLiveGoldPrices();
-    }, 5 * 60 * 1000);
+    const interval = setInterval(
+      () => {
+        fetchLiveGoldPrices();
+      },
+      5 * 60 * 1000,
+    );
 
     return () => clearInterval(interval);
   }, []);
@@ -216,17 +193,6 @@ export default function GoldRatesTodayPage() {
                     {r.price}
                   </p>
                   <p className="text-gray-600 text-sm mb-2">per gram</p>
-
-                  {/* Change Indicator */}
-                  <div
-                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${
-                      r.trend === "up"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-700"
-                    }`}
-                  >
-                    {r.change} {r.trend === "up" ? "↗️" : "↘️"}
-                  </div>
                 </div>
               ))}
             </div>

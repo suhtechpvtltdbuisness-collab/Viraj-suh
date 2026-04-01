@@ -55,18 +55,13 @@ export default function Hero({ scrollY }: HeroProps) {
     return () => clearInterval(timer);
   }, [jewelryImages.length]);
 
-  // Fetch live gold prices from GoldAPI.io
+  // Fetch live gold prices from Gold-API in INR
   const fetchLiveGoldPrices = async () => {
     setPricesLoading(true);
     try {
-      const GOLD_API_KEY = "goldapi-19qv28smgn8uruu-io";
-      const GOLD_API_URL = "https://www.goldapi.io/api";
-
-      const response = await fetch(`${GOLD_API_URL}/XAU/INR`, {
-        headers: {
-          "x-access-token": GOLD_API_KEY,
-          "Content-Type": "application/json",
-        },
+      const response = await fetch("https://api.gold-api.com/price/XAU/INR", {
+        method: "GET",
+        cache: "no-store",
       });
 
       if (!response.ok) {
@@ -75,35 +70,62 @@ export default function Hero({ scrollY }: HeroProps) {
 
       const data = await response.json();
 
-      if (data && data.price_gram_24k) {
-        // Calculate percentage change
-        const changePercent = data.chp
-          ? `${data.chp > 0 ? "+" : ""}${data.chp.toFixed(2)}%`
+      if (
+        data &&
+        (typeof data.price_gram_24k === "number" ||
+          typeof data.price === "number")
+      ) {
+        const pricePerGram24k =
+          typeof data.price_gram_24k === "number"
+            ? data.price_gram_24k
+            : data.price / 31.1034768;
+        const pricePerGram22k =
+          typeof data.price_gram_22k === "number"
+            ? data.price_gram_22k
+            : pricePerGram24k * (22 / 24);
+        const pricePerGram18k =
+          typeof data.price_gram_18k === "number"
+            ? data.price_gram_18k
+            : pricePerGram24k * (18 / 24);
+        const pricePerGram14k =
+          typeof data.price_gram_14k === "number"
+            ? data.price_gram_14k
+            : pricePerGram24k * (14 / 24);
+
+        const changeValue =
+          typeof data.chp === "number"
+            ? data.chp
+            : typeof data.change_percent === "number"
+              ? data.change_percent
+              : 0;
+
+        const changePercent = changeValue
+          ? `${changeValue > 0 ? "+" : ""}${changeValue.toFixed(2)}%`
           : "+0.00%";
-        const trend = data.chp >= 0 ? "up" : "down";
+        const trend = changeValue >= 0 ? "up" : "down";
 
         const newRates: MarketRate[] = [
           {
             metal: "Gold (24K)",
-            rate: `₹${Math.round(data.price_gram_24k).toLocaleString()}`,
+            rate: `₹${Math.round(pricePerGram24k).toLocaleString("en-IN")}`,
             change: changePercent,
             trend,
           },
           {
             metal: "Gold (22K)",
-            rate: `₹${Math.round(data.price_gram_22k).toLocaleString()}`,
+            rate: `₹${Math.round(pricePerGram22k).toLocaleString("en-IN")}`,
             change: changePercent,
             trend,
           },
           {
             metal: "Gold (18K)",
-            rate: `₹${Math.round(data.price_gram_18k).toLocaleString()}`,
+            rate: `₹${Math.round(pricePerGram18k).toLocaleString("en-IN")}`,
             change: changePercent,
             trend,
           },
           {
             metal: "Gold (14K)",
-            rate: `₹${Math.round(data.price_gram_14k).toLocaleString()}`,
+            rate: `₹${Math.round(pricePerGram14k).toLocaleString("en-IN")}`,
             change: changePercent,
             trend,
           },
@@ -129,9 +151,12 @@ export default function Hero({ scrollY }: HeroProps) {
     fetchLiveGoldPrices();
 
     // Auto-refresh every 5 minutes
-    const interval = setInterval(() => {
-      fetchLiveGoldPrices();
-    }, 5 * 60 * 1000);
+    const interval = setInterval(
+      () => {
+        fetchLiveGoldPrices();
+      },
+      5 * 60 * 1000,
+    );
 
     return () => clearInterval(interval);
   }, []);

@@ -494,7 +494,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://images.pexels.com" />
-        <link rel="dns-prefetch" href="https://www.goldapi.io" />
+        <link rel="dns-prefetch" href="https://api.gold-api.com" />
         <link rel="preload" as="image" href="/images/imageViraj.jpg" />
         <link rel="preload" as="image" href="/images/gold.jpeg" />
 

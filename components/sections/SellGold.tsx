@@ -69,19 +69,13 @@ export default function SellGoldPage() {
   const [pricesLoading, setPricesLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
-  // Fetch live gold prices directly from GoldAPI.io
+  // Fetch live gold prices directly from Gold-API in INR
   const fetchLiveGoldPrices = async () => {
     setPricesLoading(true);
     try {
-      const GOLD_API_KEY = "goldapi-19qv28smgn8uruu-io";
-      const GOLD_API_URL = "https://www.goldapi.io/api";
-
-      // Fetch XAU/INR (Gold in Indian Rupees)
-      const response = await fetch(`${GOLD_API_URL}/XAU/INR`, {
-        headers: {
-          "x-access-token": GOLD_API_KEY,
-          "Content-Type": "application/json",
-        },
+      const response = await fetch("https://api.gold-api.com/price/XAU/INR", {
+        method: "GET",
+        cache: "no-store",
       });
 
       if (!response.ok) {
@@ -90,16 +84,38 @@ export default function SellGoldPage() {
 
       const data = await response.json();
 
-      console.log("Gold API Response:", data);
+      if (
+        data &&
+        (typeof data.price_gram_24k === "number" ||
+          typeof data.price === "number")
+      ) {
+        const pricePerGram24k =
+          typeof data.price_gram_24k === "number"
+            ? data.price_gram_24k
+            : data.price / 31.1034768;
+        const pricePerGram22k =
+          typeof data.price_gram_22k === "number"
+            ? data.price_gram_22k
+            : pricePerGram24k * (22 / 24);
+        const pricePerGram18k =
+          typeof data.price_gram_18k === "number"
+            ? data.price_gram_18k
+            : pricePerGram24k * (18 / 24);
+        const pricePerGram14k =
+          typeof data.price_gram_14k === "number"
+            ? data.price_gram_14k
+            : pricePerGram24k * (14 / 24);
+        const pricePerGram10k =
+          typeof data.price_gram_10k === "number"
+            ? data.price_gram_10k
+            : pricePerGram24k * (10 / 24);
 
-      if (data && data.price_gram_24k) {
-        // GoldAPI provides direct per-gram prices for different purities
         const newRates: GoldRates = {
-          "24k": { rate: Math.round(data.price_gram_24k), purity: 99.9 },
-          "22k": { rate: Math.round(data.price_gram_22k), purity: 91.7 },
-          "18k": { rate: Math.round(data.price_gram_18k), purity: 75.0 },
-          "14k": { rate: Math.round(data.price_gram_14k), purity: 58.3 },
-          "10k": { rate: Math.round(data.price_gram_10k), purity: 41.7 },
+          "24k": { rate: Math.round(pricePerGram24k), purity: 99.9 },
+          "22k": { rate: Math.round(pricePerGram22k), purity: 91.7 },
+          "18k": { rate: Math.round(pricePerGram18k), purity: 75.0 },
+          "14k": { rate: Math.round(pricePerGram14k), purity: 58.3 },
+          "10k": { rate: Math.round(pricePerGram10k), purity: 41.7 },
         };
 
         setGoldRates(newRates);
@@ -116,7 +132,7 @@ export default function SellGoldPage() {
           }));
         }
 
-        toast.success("Live gold prices updated from GoldAPI.io!");
+        toast.success("Live gold prices updated!");
       }
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
@@ -133,9 +149,12 @@ export default function SellGoldPage() {
     fetchLiveGoldPrices();
 
     // Auto-refresh every 5 minutes
-    const interval = setInterval(() => {
-      fetchLiveGoldPrices();
-    }, 5 * 60 * 1000);
+    const interval = setInterval(
+      () => {
+        fetchLiveGoldPrices();
+      },
+      5 * 60 * 1000,
+    );
 
     return () => clearInterval(interval);
   }, []);
@@ -586,7 +605,7 @@ export default function SellGoldPage() {
                   <TrendingUp className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
                   <h3 className="font-bold text-lg mb-2">Live Market Rates</h3>
                   <p className="text-gray-600 text-sm">
-                    Real-time pricing from GoldAPI.io updated automatically
+                    Real-time pricing updated automatically
                   </p>
                 </CardContent>
               </Card>

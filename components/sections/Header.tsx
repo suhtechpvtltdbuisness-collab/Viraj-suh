@@ -20,18 +20,13 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Fetch live gold prices from GoldAPI.io
+  // Fetch live gold prices from Gold-API in INR
   const fetchLiveGoldPrice = async () => {
     setPricesLoading(true);
     try {
-      const GOLD_API_KEY = "goldapi-19qv28smgn8uruu-io";
-      const GOLD_API_URL = "https://www.goldapi.io/api";
-
-      const response = await fetch(`${GOLD_API_URL}/XAU/INR`, {
-        headers: {
-          "x-access-token": GOLD_API_KEY,
-          "Content-Type": "application/json",
-        },
+      const response = await fetch("https://api.gold-api.com/price/XAU/INR", {
+        method: "GET",
+        cache: "no-store",
       });
 
       if (!response.ok) {
@@ -40,8 +35,17 @@ export default function Header() {
 
       const data = await response.json();
 
-      if (data && data.price_gram_24k) {
-        const price24k = Math.round(data.price_gram_24k);
+      if (
+        data &&
+        (typeof data.price_gram_24k === "number" ||
+          typeof data.price === "number")
+      ) {
+        const pricePerGram24k =
+          typeof data.price_gram_24k === "number"
+            ? data.price_gram_24k
+            : data.price / 31.1034768;
+
+        const price24k = Math.round(pricePerGram24k);
         setLiveGoldPrice(`₹${price24k.toLocaleString("en-IN")}`);
       }
     } catch (error) {
@@ -59,9 +63,12 @@ export default function Header() {
     fetchLiveGoldPrice();
 
     // Auto-refresh every 5 minutes
-    const interval = setInterval(() => {
-      fetchLiveGoldPrice();
-    }, 5 * 60 * 1000);
+    const interval = setInterval(
+      () => {
+        fetchLiveGoldPrice();
+      },
+      5 * 60 * 1000,
+    );
 
     return () => clearInterval(interval);
   }, []);
