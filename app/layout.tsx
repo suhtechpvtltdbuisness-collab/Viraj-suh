@@ -130,8 +130,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const googleAdsId = "AW-17877486087";
-
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -361,6 +359,22 @@ export default function RootLayout({
   return (
     <html lang="en-IN" className="scroll-smooth">
       <head>
+        {/* Google tag (gtag.js) */}
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17877486087"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+
+              gtag('config', 'AW-17877486087');
+            `,
+          }}
+        />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -549,47 +563,7 @@ export default function RootLayout({
             }),
           }}
         />
-
-        {/* Google Ads / Analytics Tag */}
-        <script
-          async
-          src={`https://www.googletagmanager.com/gtag/js?id=${googleAdsId}`}
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-
-              // Google Ads conversion tracking
-              gtag('config', '${googleAdsId}');
-
-              // Configure GA only when ID is provided
-              ${
-                process.env.NEXT_PUBLIC_GA_ID
-                  ? `
-              gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
-                page_path: window.location.pathname,
-                send_page_view: true,
-                cookie_flags: 'SameSite=None;Secure',
-                anonymize_ip: true,
-                allow_ad_personalization_signals: false,
-                allow_google_signals: false,
-                cookie_expires: 63072000,
-              });
-              `
-                  : ``
-              }
-              
-              // Suppress third-party cookie warnings
-              gtag('set', 'cookie_update', false);
-              gtag('set', 'cookie_domain', 'virajjewellers.com');
-            `,
-          }}
-        />
       </head>
-
       <body
         className={`${inter.variable} ${playfair.variable} font-sans antialiased bg-gradient-to-br from-amber-50 to-yellow-50`}
       >
